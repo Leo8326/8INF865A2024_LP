@@ -1,4 +1,4 @@
-# -8INF865A2024_LP
+# 8INF865A2024_LP
 Programmation de plateformes mobiles
 
 Léo Pelazza
