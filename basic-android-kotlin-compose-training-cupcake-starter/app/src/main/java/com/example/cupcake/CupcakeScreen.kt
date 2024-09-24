@@ -15,6 +15,8 @@
  */
 package com.example.cupcake
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -62,6 +64,20 @@ private fun cancelOrderAndNavigateToStart(
         inclusive = false)
 }
 
+private fun shareOrder(
+    context : Context,
+    subject : String,
+    summary : String
+) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, subject)
+        putExtra(Intent.EXTRA_TEXT, summary)
+    }
+    context.startActivity(Intent.createChooser(
+        intent,
+        context.getString(R.string.new_cupcake_order)))
+}
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -157,11 +173,14 @@ fun CupcakeApp(
             }
 
             composable(route = CupcakeScreen.Summary.name) {
+                val context = LocalContext.current
                 OrderSummaryScreen(
                     orderUiState = uiState,
                     onSendButtonClicked = {
                         subject : String, summary : String ->
-
+                        shareOrder(context = context,
+                            subject = subject,
+                            summary = summary)
                     },
                     
                     onCancelButtonClicked = {
@@ -172,5 +191,4 @@ fun CupcakeApp(
             }
         }
     }
-
 }
